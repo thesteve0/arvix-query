@@ -1,5 +1,4 @@
 from InstructorEmbedding import INSTRUCTOR
-import numpy as np
 from qdrant_client import QdrantClient
 import time
 
@@ -26,10 +25,11 @@ print(f" Real time: {t2[0] - t1[0]:.2f} seconds")
 print(f" CPU time: {t2[1] - t1[1]:.2f} seconds")
 
 
-sentence = "ocean red tide"
+sentence = "The increase in red tide dinoflagellates off the coast of Florida"
 instruction  = "Represent the Research Paper abstract for retrieval; Input:"
 
 t1 = time.perf_counter(), time.process_time()
+
 embeddings = model.encode([[instruction,sentence]])
 
 t2 = time.perf_counter(), time.process_time()
@@ -37,30 +37,33 @@ print("\nCalculating embedding time")
 print(f" Real time: {t2[0] - t1[0]:.2f} seconds")
 print(f" CPU time: {t2[1] - t1[1]:.2f} seconds")
 
-
-#print("embeddings: " + str(embeddings[0][:5]))
-
-print("Similar search for " + "'sentence'")
+print("-----------------------------------------------------------------\n")
+print("Similar search for " + sentence + "\n")
+print("-----------------------------------------------------------------\n")
 
 client = QdrantClient("localhost", port=6333)
 search_result = client.search(
     collection_name="arvix_abs",
     query_vector=embeddings[0],
-    limit=10
+    limit=3
 )
-# print(search_result)
-for scored_result in search_result :
-    print("Abstract: " + scored_result.payload["abstract"][:200] +"\n")
 
-print("-----------------------------------------------------------------")
-print("Dissimilar search for " + "'sentence'")
+# Now just display the results
+for scored_result in search_result :
+    print("Abstract: " + scored_result.payload["abstract"][:400] +"\n")
+
+
+print("-----------------------------------------------------------------\n")
+print("Dissimilar search for " + sentence + "\n")
+print("-----------------------------------------------------------------\n")
+
 dissimilar_search_result = client.search(
     collection_name="arvix_abs",
     query_vector=-1*embeddings[0],
-    limit=10
+    limit=3
 )
 
 for scored_result in dissimilar_search_result :
-    print("Abstract: " + scored_result.payload["abstract"][:200] +"\n")
+    print("Abstract: " + scored_result.payload["abstract"][:400] +"\n")
 
 print("finished")
