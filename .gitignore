@@ -326,3 +326,4 @@ cython_debug/
 #.idea/
 
 /arxiv_abstracts.zip
+*.parquet
