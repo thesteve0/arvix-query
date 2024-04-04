@@ -17,6 +17,8 @@ https://github.com/thesteve0/arvix-query/releases/download/0.1/abstracts_1.parqu
 
 Then use *arxiv-import.py* to import from the parquet file. Make sure to update connections parameters as needed
 
+After import we need to run the commands in sql_commands.sql to build the index
+
 Data was originally encoded using this model
 https://huggingface.co/hkunlp/instructor-xl
 

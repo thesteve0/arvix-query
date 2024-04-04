@@ -10,9 +10,10 @@ RUN if [ "${NODE_VERSION}" != "none" ]; then su vscode -c "umask 0002 && . /usr/
 
 RUN useradd postgres
 
-# [Optional] If your requirements rarely change, uncomment this section to add them to the image.
+# [Optional] If your requirements rarelyq change, uncomment this section to add them to the image.
 # COPY requirements.txt /tmp/pip-tmp/
 RUN pip3 --disable-pip-version-check --no-cache-dir install \
+    psycopg2\
     psycopg2-binary \
     pgvector \
     pyarrow \
