@@ -8,7 +8,7 @@ from pathlib import Path
 # The proper word is arxiv but I messed when creating the folder and project
 
 PARQUET_PATH= Path('./')
-DB_NAME= 'lala'
+DB_NAME= 'arxiv_abstracts'
 
 conn = psycopg.connect("host=localhost user=postgres password='letmein'", autocommit=True)
 cursor = conn.cursor()
@@ -17,7 +17,7 @@ cursor.execute("SELECT datname FROM pg_database;")
 
 list_database = cursor.fetchall()
 
-if ('lala',) in list_database:
+if (DB_NAME,) in list_database:
     cursor.execute(("DROP database "+ DB_NAME +" with (FORCE);"))
     cursor.execute("create database " + DB_NAME + ";")
 else:
@@ -26,12 +26,13 @@ else:
 #Now close the connection and switch DB
 conn.close()
 
+connect_string = f"host=localhost user=postgres password='letmein' dbname='{DB_NAME}'"
 
-conn = psycopg.connect("host=localhost user=postgres password='letmein' dbname='lala'", autocommit=True)
+conn = psycopg.connect(connect_string,  autocommit=True)
 conn.execute('CREATE EXTENSION IF NOT EXISTS vector')
 conn.close()
 
-conn = psycopg.connect("host=localhost user=postgres password='letmein' dbname='lala'", autocommit=True)
+conn = psycopg.connect(connect_string, autocommit=True)
 register_vector(conn)
 
 conn.execute('DROP TABLE IF EXISTS documents')

@@ -1,7 +1,12 @@
+import numpy as np
 from InstructorEmbedding import INSTRUCTOR
-from qdrant_client import QdrantClient
 import time
+from pgvector.psycopg import register_vector
+import psycopg
 
+DB_NAME = "arxiv_abstracts"
+
+connect_string = f"host=localhost user=postgres password='letmein' dbname='{DB_NAME}'"
 
 
 # This is from the original file found here:
@@ -31,6 +36,7 @@ instruction  = "Represent the Research Paper abstract for retrieval; Input:"
 t1 = time.perf_counter(), time.process_time()
 
 embeddings = model.encode([[instruction,sentence]])
+query_embedding = embeddings[0]
 
 t2 = time.perf_counter(), time.process_time()
 print("\nCalculating embedding time")
@@ -41,29 +47,24 @@ print("-----------------------------------------------------------------\n")
 print("Similar search for " + sentence + "\n")
 print("-----------------------------------------------------------------\n")
 
-client = QdrantClient("localhost", port=6333)
-search_result = client.search(
-    collection_name="arvix_abs",
-    query_vector=embeddings[0],
-    limit=3
-)
+conn = psycopg.connect(connect_string, autocommit=True)
+register_vector(conn)
 
-# Now just display the results
-for scored_result in search_result :
-    print("Abstract: " + scored_result.payload["abstract"][:400] +"\n")
+results = conn.execute('SELECT (embedding <=> %s) as distance, abstract FROM documents ORDER BY embedding <=> %s LIMIT 5', (query_embedding, query_embedding, )).fetchall()
 
+for result in results:
+    print("distance: " + str(result[0]) + "\nabstract: " + result[1][:300])
 
 print("-----------------------------------------------------------------\n")
 print("Dissimilar search for " + sentence + "\n")
 print("-----------------------------------------------------------------\n")
 
-dissimilar_search_result = client.search(
-    collection_name="arvix_abs",
-    query_vector=-1*embeddings[0],
-    limit=3
-)
+dissimilar_embedding = -1 * query_embedding
 
-for scored_result in dissimilar_search_result :
-    print("Abstract: " + scored_result.payload["abstract"][:400] +"\n")
+results = conn.execute('SELECT (embedding <=> %s) as distance, abstract FROM documents ORDER BY embedding <=> %s LIMIT 5', (dissimilar_embedding, dissimilar_embedding, )).fetchall()
+
+for result in results:
+    print("distance: " + str(result[0]) + "\nabstract: " + result[1][:300])
+
 
 print("finished")
