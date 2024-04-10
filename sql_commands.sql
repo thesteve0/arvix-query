@@ -23,3 +23,4 @@ SELECT current_setting('work_mem');
 set maintenance_work_mem to '350MB';
 CREATE INDEX idx_documents_hnsw ON documents USING hnsw
     (embedding vector_cosine_ops) WITH (m = 10, ef_construction = 40);
+

@@ -54,16 +54,3 @@ for path in PARQUET_PATH.glob('*.parquet'):
 
 
 print('finished')
-# Should it create the DB and then load the vector extension - yes for now
-# Table structure
-# id autoincrementing int
-# abstract text
-# embedding vector
-#
-# Then build the hnsw index
-
-# Load a parquet file - since they are so huge might have to do a 1:1 parquet table insert
-
-# maybe format properly
-
-# insert into postgres
