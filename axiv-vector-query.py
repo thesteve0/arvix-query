@@ -28,7 +28,8 @@ print("model load time")
 print(f" Real time: {t2[0] - t1[0]:.2f} seconds")
 print(f" CPU time: {t2[1] - t1[1]:.2f} seconds")
 
-
+# read this to see examples of Insctuctor for information retrieval
+# https://pypi.org/project/InstructorEmbedding/#use-customized-embeddings-for-information-retrieval
 sentence = "simulated annealing"
 instruction  = "Represent the Research Paper abstract for retrieval; Input:"
 

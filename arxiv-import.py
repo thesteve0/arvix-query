@@ -8,7 +8,7 @@ from pathlib import Path
 # The proper word is arxiv but I messed when creating the folder and project
 
 PARQUET_PATH= Path('./')
-DB_NAME= 'arxiv_abstracts'
+DB_NAME= 'images'
 
 conn = psycopg.connect("host=localhost user=postgres password='letmein'", autocommit=True)
 cursor = conn.cursor()
