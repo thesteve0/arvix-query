@@ -1,9 +1,19 @@
 # Arvix Query
+The Alexindria project embedded all the abstract in Arxiv. They used the InstructorXL model to encode the text. This is a snapshot of the contents in the past.
+They took the embeddings along with the original content and put it in a parquet files. The complete data with all the abstracts is 6.8GB, which is impractical 
+for this workshop. Instead we are just going to use one of the parquet files (340MB).
+
+## Steps to get ready
+1. We run the arxiv import.py which will create the table with the pg_vector extension and then move the data into the database
+2. We need to run the SQL commands in sql_commands.sql to create the HNSW index
+3. Now you can run a straight vector similary search using arxiv-vector-query. There are multiple types of queries in that file and you can change the abstract text you are sending
+4. arxiv-hybrid-query combines the results from PostgreSQL full text search and a pg_vector search to provide a combination of similarity and exact word search 
+
 
 There is a typo in the project which I kept here as well. It is not Arvix it is Arxiv. 
 
 Caveat: This is not production level code. It was written to make teaching easy - there are a bunch of bad practices 
-used. **PLEASE** do not copy and paste this directly
+used. **PLEASE** do not copy and paste any of this directly into your production code
 
 Here is the Arxiv site:
 http://arxiv.org/
