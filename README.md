@@ -4,6 +4,10 @@ They took the embeddings along with the original content and put it in a parquet
 for this workshop. Instead we are just going to use one of the parquet files (340MB).
 
 ## Steps to get ready
+0. For some reason I can't get the devcontainer to download this file so please do it manually in the terminal
+```
+wget -qb https://github.com/thesteve0/arvix-query/releases/download/0.1/abstracts_1.parquet​
+```
 1. We run the arxiv import.py which will create the table with the pg_vector extension and then move the data into the database
 2. We need to run the SQL commands in sql_commands.sql to create the HNSW index
 3. Now you can run a straight vector similary search using arxiv-vector-query. There are multiple types of queries in that file and you can change the abstract text you are sending
