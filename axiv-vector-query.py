@@ -16,7 +16,7 @@ model = INSTRUCTOR('hkunlp/instructor-xl')
 # CHANGE "sentence" HERE FOR DIFFERENT RESULTS
 # read this to see examples of Instructor for information retrieval
 # https://pypi.org/project/InstructorEmbedding/#use-customized-embeddings-for-information-retrieval
-sentence = "simulated annealing"
+sentence = "Thames river pollution england"
 instruction  = "Represent the Research Paper abstract for retrieval; Input:"
 
 embeddings = model.encode([[instruction,sentence]])
